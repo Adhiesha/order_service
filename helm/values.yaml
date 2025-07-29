@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: adeeshadev/order-service
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 5004
+
+mysql:
+  url: "mysql+pymysql://admin:siIxgzrMXEmtm47uoYxs@gamedb.cluster-cx6aii8yyy4v.ap-northeast-1.rds.amazonaws.com:3306/ordersdb"
