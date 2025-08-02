@@ -4,7 +4,7 @@ metadata:
   name: post-sync-order-test
   annotations:
     argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded,HookFailed
 spec:
   template:
     spec:
@@ -12,8 +12,11 @@ spec:
       containers:
         - name: order-api-test
           image: python:3.10
-          command: ["python3"]
-          args: ["-u", "/tests/order_test.py", "{{ .Values.test.apiBaseUrl }}"]
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              pip install requests && \
+              python3 /tests/order_test.py "{{ .Values.test.apiBaseUrl }}"
           volumeMounts:
             - name: test-scripts
               mountPath: /tests
