@@ -2,10 +2,12 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, release, develop ]
 
 env:
-  IMAGE_NAME: adeeshadev/order-service
+  IMAGE_NAME: adeeshadev/game-service
+  IMAGE_TAG: ${{ github.ref_name == 'master' && 'latest' || github.ref_name == 'release' && 'stage_latest' || 'dev_latest' }}
+
 
 jobs:
   build-and-push:
@@ -29,5 +31,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           platforms: linux/amd64,linux/arm64
