@@ -21,9 +21,7 @@ def main():
         print("Missing environment variable: API_BASE_URL")
         sys.exit(1)
 
-    test_endpoint(base_url, "/recommendations/trending")
-    test_endpoint(base_url, "/recommendations/most_played")
-    test_endpoint(base_url, "/recommendations/top_categories")
+    test_endpoint(base_url, "/orders")
 
 
 if __name__ == "__main__":

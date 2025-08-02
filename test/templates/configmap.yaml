@@ -17,7 +17,5 @@ data:
           print(f"[FAIL] {full_url} - {e}")
           sys.exit(1)
 
-    test_endpoint(base_url, "/recommendations/trending")
-    test_endpoint(base_url, "/recommendations/most_played")
-    test_endpoint(base_url, "/recommendations/top_categories")
+    test_endpoint(base_url, "/orders")
     print("All tests passed.")
