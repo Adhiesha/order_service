@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: post-deploy-test-orders
+  annotations:
+    "argocd.argoproj.io/hook": PostSync
+    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: test-orders
+          image: python:3.10-slim
+          env:
+              - name: API_BASE_URL
+                value: "{{ .Values.test.apiBaseUrl }}"
+          command: [ "sh", "-c" ]
+          args:
+            - |
+              apt update && apt install -y curl && \
+              pip install requests && \
+              curl -O https://raw.githubusercontent.com/your-org/your-repo/main/charts/lugx-app/files/api_test.py && \
+              python3 api_test.py

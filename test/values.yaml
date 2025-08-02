@@ -1,0 +1,2 @@
+test:
+  apiBaseUrl: http://api-gateway.default.svc.cluster.local
