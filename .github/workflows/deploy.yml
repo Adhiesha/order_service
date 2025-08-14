@@ -4,9 +4,12 @@ on:
   push:
     branches: [ master, release, develop ]
 
+permissions:
+  contents: write
+
 env:
   IMAGE_NAME: adeeshadev/order-service
-  IMAGE_TAG: ${{ github.ref_name == 'master' && 'latest' || github.ref_name == 'release' && 'stage_latest' || 'dev_latest' }}
+  IMAGE_TAG: "${{ github.ref_name }}-${{ github.run_number }}" # branch-build_number
 
 
 jobs:
@@ -33,3 +36,15 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           platforms: linux/amd64,linux/arm64
+
+      - name: Update Helm chart values.yaml
+        run: |
+          sed -i "s|tag: .*|tag: \"${IMAGE_TAG}\"|g" helm/values.yaml
+
+      - name: Commit and push updated Helm chart
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add helm/values.yaml
+          git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+          git push origin ${{ github.ref_name }}
