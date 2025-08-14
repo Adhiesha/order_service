@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: adeeshadev/order-service
-  tag: latest
+  tag: "develop-11"
   pullPolicy: Always
 
 service:
